@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""
+Binance Futures Trading Bot (Testnet) - CLI entry point.
+"""
+import sys
+import argparse
+from dotenv import load_dotenv
+import os
+
+# Align python sys path to find the 'bot' package
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from bot.logging_config import setup_logging
+from bot.validators import validate_inputs
+from bot.client import BinanceFuturesClient
+from bot.orders import execute_order
+
+def main():
+    # 1. Initialize Logger
+    logger = setup_logging()
+    logger.info("Initializing CLI parser...")
+
+    # 2. Defile/Parse CLI Arguments
+    parser = argparse.ArgumentParser(
+        description="Binance Futures Trading Bot (USDT-M Testnet CLI)",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    
+    parser.add_argument(
+        '--symbol', 
+        required=True, 
+        help="Futures pair to trade (e.g., BTCUSDT)"
+    )
+    parser.add_argument(
+        '--side', 
+        required=True, 
+        choices=['BUY', 'SELL', 'buy', 'sell'], 
+        help="Direction of the order (BUY or SELL)"
+    )
+    parser.add_argument(
+        '--type', 
+        required=True, 
+        choices=['MARKET', 'LIMIT', 'market', 'limit'], 
+        help="Order execution type (MARKET or LIMIT)"
+    )
+    parser.add_argument(
+        '--quantity', 
+        type=float, 
+        required=True, 
+        help="Quantity size of the order in base asset (e.g. 0.001)"
+    )
+    parser.add_argument(
+        '--price', 
+        type=float, 
+        help="Price triggers for LIMIT orders (not needed for MARKET orders)"
+    )
+
+    args = parser.parse_args()
+
+    symbol = args.symbol.strip().upper()
+    side = args.side.strip().upper()
+    order_type = args.type.strip().upper()
+    quantity = args.quantity
+    price = args.price
+
+    # 3. Before-API Validation
+    is_valid, err_msg = validate_inputs(
+        symbol=symbol,
+        side=side,
+        order_type=order_type,
+        quantity=quantity,
+        price=price
+    )
+
+    if not is_valid:
+        logger.error(f"Input validation failure: {err_msg}")
+        print(f"\n[Validation Error] {err_msg}\n")
+        sys.exit(1)
+
+    # 4. Load Environment Keys
+    # Look for .env file in the directory of cli.py
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    if os.path.exists(env_path):
+        load_dotenv(env_path)
+    else:
+        load_dotenv() # Fallback to default search
+
+    api_key = os.getenv('API_KEY')
+    api_secret = os.getenv('API_SECRET')
+
+    if not api_key or not api_secret:
+        msg = ("Missing credentials. Please define both 'API_KEY' and 'API_SECRET' "
+               f"in your '.env' file located at '{env_path}'.")
+        logger.critical(msg)
+        print(f"\n[Credential Error] {msg}\n")
+        sys.exit(1)
+
+    # 5. Initialize client & Execute trade
+    try:
+        logger.info("Initializing API connection to Binance Futures Testnet...")
+        client = BinanceFuturesClient(api_key=api_key, api_secret=api_secret)
+        
+        # Optionally, check prices if client needs to log mark price
+        try:
+            logger.debug(f"Fetching current ticker price for symbol: {symbol}...")
+            client.get_symbol_price(symbol)
+        except Exception:
+            # We can still proceed even if price fetch fails, but good to know
+            pass
+
+        # Execute Order
+        logger.info(f"Placing Futures {order_type} {side} order...")
+        execute_order(
+            client=client,
+            symbol=symbol,
+            side=side,
+            order_type=order_type,
+            quantity=quantity,
+            price=price
+        )
+        logger.info("CLI operation completed successfully.")
+
+    except Exception as e:
+        logger.critical("Execution aborted due to unexpected error.")
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()

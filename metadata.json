@@ -1,0 +1,6 @@
+{
+  "name": "Binance Futures Trading Bot",
+  "description": "An interactive dashboard and terminal CLI for a Binance Futures USDT-M Testnet trading bot, complete with python files, log viewer, and paper-trading simulation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

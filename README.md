@@ -1,1 +1,3 @@
-# Binance-Futures-Trading-Bot-Testnet-
+python-binance==1.0.19
+python-dotenv==1.0.1
+urllib3<2.0.0

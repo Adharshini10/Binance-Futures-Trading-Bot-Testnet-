@@ -1,0 +1,33 @@
+export type TradeSide = "BUY" | "SELL";
+export type OrderType = "MARKET" | "LIMIT";
+
+export interface BotFileMap {
+  [filename: string]: string;
+}
+
+export interface TickerInfo {
+  symbol: string;
+  price: number;
+  isFallback?: boolean;
+}
+
+export interface ExecutionReceipt {
+  orderId: number;
+  status: string;
+  executedQty: number;
+  avgPrice: number;
+  stdout: string;
+}
+
+export interface Position {
+  symbol: string;
+  side: TradeSide;
+  avgPrice: number;
+  quantity: number;
+  unrealizedPnl: number;
+}
+
+export interface SimulatedAccount {
+  balance: number;
+  positions: Position[];
+}
