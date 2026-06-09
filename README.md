@@ -197,9 +197,10 @@ Includes:
 
 # 👨‍💻 Author
 
-Built as part of a Python Developer Assignment for Binance Futures Trading Bot.## 🎥 Demo
+Built as part of a Python Developer Assignment for Binance Futures Trading Bot
+## 🎥 Demo
 
-## Screen Recording
+**Screen Recording**
 
 Watch the project in action:
 
