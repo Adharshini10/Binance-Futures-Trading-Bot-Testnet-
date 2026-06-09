@@ -133,31 +133,9 @@ python cli.py --symbol BTCUSDT --side BUY --type LIMIT --quantity 0.001 --price 
 python cli.py --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 60000
 ```
 
----
 
-# 📤 Expected Output
 
-### Order Summary
 
-```
-ORDER SUMMARY
-Symbol: BTCUSDT
-Side: BUY
-Type: MARKET
-Quantity: 0.001
-```
-
-### Success Response
-
-```
-ORDER SUCCESSFUL
-Order ID: 123456
-Status: FILLED
-Executed Qty: 0.001
-Avg Price: 51234.50
-```
-
----
 
 # 📁 Logs
 
@@ -251,6 +229,6 @@ https://aistudio.google.com/apps/32566188-bead-4dec-92fa-f655d2b20d3c?fullscreen
 ## 📂 GitHub Repository
 
 **Source Code:**  
-
+https://aistudio.google.com/apps/32566188-bead-4dec-92fa-f655d2b20d3c?fullscreenApplet=true&showPreview=true&showAssistant=true
 
 
