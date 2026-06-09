@@ -215,20 +215,11 @@ This video demonstrates:
 
 ---
 
-## 🌐 Interactive Workspace Preview
 
-Explore the project workspace:
-
-**Workspace Link:**  
-https://aistudio.google.com/apps/32566188-bead-4dec-92fa-f655d2b20d3c?fullscreenApplet=true&showPreview=true&showAssistant=true
-
-> **Note:** This is a shared interactive development workspace for previewing the project structure and source code. The trading bot itself is a CLI-based application and runs locally using the setup and execution instructions provided below.
-
----
 
 ## 📂 GitHub Repository
 
 **Source Code:**  
-https://aistudio.google.com/apps/32566188-bead-4dec-92fa-f655d2b20d3c?fullscreenApplet=true&showPreview=true&showAssistant=true
+
 
 
